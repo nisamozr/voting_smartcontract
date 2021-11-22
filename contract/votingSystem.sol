@@ -16,12 +16,10 @@ contract election{
         
     } 
     struct Voter{
-        uint voterIndex;
-        uint voterId;
         string voterName;
         uint voterWard;
-        string homeaddress;
-        address voteraddress;
+        
+        address voterId;
     }
     
     mapping(address => bool) public votes;
@@ -35,28 +33,46 @@ contract election{
         _;
     }
     
-    function regieterVoters(uint index,uint _voterid, string memory _name, uint _ward , string memory _houseName) public {
+    function regieterVoters( string memory _name, uint _ward ) public {
         for(uint i=1; i<= voterCount; i++ ){
-            if(voter[i].voteraddress == msg.sender){
+            if(voter[i].voterId == msg.sender){
                 revert("already created");
-                
             }
-            
         }
         voterCount++;
-        voter[voterCount] = Voter(index,_voterid, _name, _ward,_houseName, msg.sender);
+        voter[voterCount] = Voter(_name, _ward, msg.sender);
     }
     
-    function addcadidet(string memory _name, uint _ward) public onlyOwner {
-        candedatsCount++;
-        candidats[candedatsCount]= Candidats(candedatsCount, _name,_ward,0);
+    function addcadidet(address _voteraddress) public onlyOwner {
+          for(uint i=1; i<= voterCount; i++ ){
+            if(voter[i].voterId == _voteraddress && voter[i].voterId != 0x0000000000000000000000000000000000000000){
+                candedatsCount++;
+                candidats[candedatsCount]= Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0);
+      
+            }
+        }
+       
     }
     
     function vote(uint candidatsId) public {
+
         require(candidatsId > 0 && candidatsId <= candedatsCount, "invalide user");
         require(!votes[msg.sender], "you are already voted");
-         votes[msg.sender] = true;
-        candidats[candidatsId].voteCount++;
+        
+        for(uint i=1; i<= voterCount; i++ ){
+            if(voter[i].voterId == msg.sender){
+                if(voter[i].voterWard == candidats[candidatsId].ward){
+                     votes[msg.sender] = true;
+                      candidats[candidatsId].voteCount++;
+                }else{
+                    revert("you can't vote another ward candidate");
+                }
+                
+            }
+        }
+        
+        
+        
     }
 
 }
