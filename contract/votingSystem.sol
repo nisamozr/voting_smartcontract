@@ -8,15 +8,16 @@ contract election{
         owner = msg.sender;
     }
     
-    struct Candidats{
+    struct  Candidats{
         uint CandidateId;
         string name;
         uint ward;
         uint voteCount;
         
-    }
+    } 
     struct Voter{
-        // uint voterId;
+        uint voterIndex;
+        uint voterId;
         string voterName;
         uint voterWard;
         string homeaddress;
@@ -27,26 +28,28 @@ contract election{
     mapping (address => Voter) public voter;
     mapping (uint => Candidats) public candidats;
     uint candedatsCount;
+    uint voterCount;
     
     modifier onlyOwner(){
         require(msg.sender == owner,"Only Owner can add candidate");
         _;
     }
     
-    function regieterVoters(string memory _name, uint _ward , string memory _houseName) public {
-        voter[msg.sender] = Voter(_name, _ward,_houseName, msg.sender);
+    function regieterVoters(uint index,uint _id, string memory _name, uint _ward , string memory _houseName) public {
+      
+        voter[msg.sender] = Voter(index,_id, _name, _ward,_houseName, msg.sender);
     }
     
-    function addcadidet(string memory _name) public onlyOwner {
+    function addcadidet(string memory _name, uint _ward) public onlyOwner {
         candedatsCount++;
-        // candidats[candedatsCount]= Candidats(candedatsCount, _name,0);
+        candidats[candedatsCount]= Candidats(candedatsCount, _name,_ward,0);
     }
     
     function vote(uint candidatsId) public {
         require(candidatsId > 0 && candidatsId <= candedatsCount, "invalide user");
         require(!votes[msg.sender], "you are already voted");
          votes[msg.sender] = true;
-        candidats[candidatsId].vote++;
+        candidats[candidatsId].voteCount++;
     }
 
 }
