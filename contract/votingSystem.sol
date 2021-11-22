@@ -25,7 +25,7 @@ contract election{
     }
     
     mapping(address => bool) public votes;
-    mapping (address => Voter) public voter;
+    mapping (uint => Voter) public voter;
     mapping (uint => Candidats) public candidats;
     uint candedatsCount;
     uint voterCount;
@@ -35,9 +35,16 @@ contract election{
         _;
     }
     
-    function regieterVoters(uint index,uint _id, string memory _name, uint _ward , string memory _houseName) public {
-      
-        voter[msg.sender] = Voter(index,_id, _name, _ward,_houseName, msg.sender);
+    function regieterVoters(uint index,uint _voterid, string memory _name, uint _ward , string memory _houseName) public {
+        for(uint i=1; i<= voterCount; i++ ){
+            if(voter[i].voteraddress == msg.sender){
+                revert("already created");
+                
+            }
+            
+        }
+        voterCount++;
+        voter[voterCount] = Voter(index,_voterid, _name, _ward,_houseName, msg.sender);
     }
     
     function addcadidet(string memory _name, uint _ward) public onlyOwner {
