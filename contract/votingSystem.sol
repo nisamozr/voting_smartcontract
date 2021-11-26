@@ -13,18 +13,18 @@ contract election{
         string name;
         uint ward;
         uint voteCount;
+        address id;
         
     } 
     struct Voter{
         string voterName;
         uint voterWard;
-        
         address voterId;
     }
     
     mapping(address => bool) public votes;
     mapping (uint => Voter) public voter;
-    mapping (uint => Candidats) public candidats;
+    mapping (uint  => Candidats) public candidats;
     uint candedatsCount;
     uint voterCount;
     
@@ -33,7 +33,7 @@ contract election{
         _;
     }
     
-    function regieterVoters( string memory _name, uint _ward ) public {
+    function registerVoters( string memory _name, uint _ward ) public {
         for(uint i=1; i<= voterCount; i++ ){
             if(voter[i].voterId == msg.sender){
                 revert("already created");
@@ -45,13 +45,15 @@ contract election{
     
     function addcadidet(address _voteraddress) public onlyOwner {
           for(uint i=1; i<= voterCount; i++ ){
-            if(voter[i].voterId == _voteraddress && voter[i].voterId != 0x0000000000000000000000000000000000000000){
-                candedatsCount++;
-                candidats[candedatsCount]= Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0);
-      
+            if(voter[i].voterId == _voteraddress  ){
+                  candedatsCount++;
+                candidats[candedatsCount] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,_voteraddress);
+           
+            }else if(candidats[i].id == _voteraddress){
+                   revert("same candidate can't be addd");
             }
+        
         }
-       
     }
     
     function vote(uint candidatsId) public {
@@ -70,9 +72,7 @@ contract election{
                 
             }
         }
-        
-        
-        
+
     }
 
 }
