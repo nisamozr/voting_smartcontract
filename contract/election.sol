@@ -2,8 +2,6 @@
 
 pragma solidity 0.8.7;
 
-
-
 contract voterId{
 
  struct VoterIdcard{
@@ -56,7 +54,7 @@ contract election is voterId{
     
     mapping(address => bool) public votes;
     mapping (uint => Voter) public voter;
-    mapping (uint  => Candidats) public candidats;
+    mapping (uint  => Candidats) public candidateReg;
     mapping (uint  => Candidats) public candidatslist;
     uint candedatsCount;
     uint voterCount;
@@ -100,43 +98,43 @@ contract election is voterId{
                
                     candedatsCount++;
                     candidateStatus _candidateStatus = candidateStatus.pending;
-                    candidats[candedatsCount] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
+                    candidateReg[candedatsCount] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
 
            
-            }else if(candidats[i].id == msg.sender){
+            }else if(candidateReg[i].id == msg.sender || voterCount == 0){
                    revert("same candidate can't be addd");
             }       
         }
         
     }
-    //  function approveCadidedress(address _voteraddress) public onlyOwner {
-    //         for(uint i=1; i<= candedatsCount; i++ ){
 
-    //         }
-    //  }
-    
-    function approveCadidedress1(address _voteraddress) public onlyOwner {
-          for(uint i=1; i<= candedatsCount; i++ ){
-              if(candidats[i].id == _voteraddress   ){
-                  for(uint j =1; j<= count; j++){
-                      if( candidats[i].ward == voteridcard[j].voterWard && candidats[i].VoterId == voteridcard[j].voterIds){
+     function approveCadidedress(address _voteraddress) public onlyOwner {
+            for(uint i=1; i<= candedatsCount; i++ ){
+                if(candidateReg[i].id == _voteraddress){
+                    for(uint j =1; j<= count; j++){
+                    if( candidateReg[i].ward == voteridcard[j].voterWard && candidateReg[i].VoterId == voteridcard[j].voterIds){
+                                
                                 approvedCandidateCount++;
-                    candidateStatus _candidateStatus = candidateStatus.approved;
-                    candidatslist[candedatsCount] = Candidats(approvedCandidateCount, candidats[i].name,candidats[i].ward,0,_voteraddress, candidats[i].VoterId, _candidateStatus);
-                    
-                      }else{
-                           candidateStatus _candidateStatus = candidateStatus.rejected;
-                    candidats[i] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
-
+                                candidateStatus _candidateStatus = candidateStatus.approved;
+                                 candidateReg[i] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
+                                candidatslist[approvedCandidateCount] = Candidats(approvedCandidateCount, candidateReg[i].name,candidateReg[i].ward,0,_voteraddress, candidateReg[i].VoterId, _candidateStatus);    
                       }
-                  }
-              
-              }
-            //   else{
-            //       revert("there is no such candidate");
-            //   }     
-        }
-    }
+                      else{
+                           candidateStatus _candidateStatus = candidateStatus.rejected;
+                           candidateReg[i] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
+
+                        }
+                                }
+
+
+                }else if(candidatslist[i].id == _voteraddress ){
+                    revert("alreay approved");
+                }
+
+            }
+     }
+    
+ 
      
 }
 
