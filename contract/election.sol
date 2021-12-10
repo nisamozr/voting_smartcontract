@@ -93,37 +93,52 @@ contract election is voterId{
             }       
     }
     function applyForCantidate()public{
+     
+       
+     
          for(uint i=1; i<= voterCount; i++ ){
-            if(voter[i].voterAddress == msg.sender && voter[i].verify == true){
+            //   require(voter[i].voterAddress == msg.sender, "account  not match");
+           
+                  if(voter[i].voterAddress == msg.sender && voter[i].verify == true){
                
                     candedatsCount++;
                     candidateStatus _candidateStatus = candidateStatus.pending;
-                    candidateReg[candedatsCount] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
+                    candidateReg[candedatsCount] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,voter[i].voterAddress, voter[i].voterId, _candidateStatus);
 
            
             }else if(candidateReg[i].id == msg.sender || voterCount == 0){
                    revert("same candidate can't be addd");
-            }       
+            }
+
+             
+               
+                  
         }
         
     }
 
      function approveCadidedress(address _voteraddress) public onlyOwner {
+         for(uint j ; j<=approvedCandidateCount;j++){
+             if(candidatslist[j].id == _voteraddress){
+                 revert("already aproved");
+             }
+         }
             for(uint i=1; i<= candedatsCount; i++ ){
+          
                 if(candidateReg[i].id == _voteraddress){
                     for(uint j =1; j<= count; j++){
                     if( candidateReg[i].ward == voteridcard[j].voterWard && candidateReg[i].VoterId == voteridcard[j].voterIds){
                                 
                                 approvedCandidateCount++;
                                 candidateStatus _candidateStatus = candidateStatus.approved;
-                                 candidateReg[i] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
+                                 candidateReg[i] = Candidats(candedatsCount, candidateReg[i].name,candidateReg[i].ward,0,msg.sender, candidateReg[i].VoterId, _candidateStatus);
                                 candidatslist[approvedCandidateCount] = Candidats(approvedCandidateCount, candidateReg[i].name,candidateReg[i].ward,0,_voteraddress, candidateReg[i].VoterId, _candidateStatus);    
                       }
-                      else{
-                           candidateStatus _candidateStatus = candidateStatus.rejected;
-                           candidateReg[i] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
+                    //   else{
+                    //        candidateStatus _candidateStatus = candidateStatus.rejected;
+                    //        candidateReg[i] = Candidats(candedatsCount, voter[i].voterName,voter[i].voterWard,0,msg.sender, voter[i].voterId, _candidateStatus);
 
-                        }
+                    //     }
                                 }
 
 
@@ -132,6 +147,24 @@ contract election is voterId{
                 }
 
             }
+     }
+
+
+     function result() public view returns(string memory , uint ){
+         require(approvedCandidateCount>=1, "there is no candidate");
+         uint votecont ;
+         uint index ;
+         for(uint i =1 ; i<=approvedCandidateCount; i++){
+             if(candidatslist[i].voteCount > votecont){
+                 votecont = candidatslist[i].voteCount;
+                 index = i;
+             }
+
+         }
+        return(candidatslist[index].name,candidatslist[index].voteCount);
+
+
+         
      }
     
  
