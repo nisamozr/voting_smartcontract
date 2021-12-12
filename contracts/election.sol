@@ -35,7 +35,7 @@ contract VoterId{
 
 contract Election is VoterId{
     address authority;
-    constructor(){
+    constructor {
         authority = msg.sender;
     }
      struct Voter{
