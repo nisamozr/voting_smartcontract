@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.8.7;
+pragma solidity ^0.8.7;
 
 contract VoterId{
  struct voterIdcard{
@@ -35,7 +35,7 @@ contract VoterId{
 
 contract Election is VoterId{
     address authority;
-    constructor {
+    constructor(){
         authority = msg.sender;
     }
      struct Voter{

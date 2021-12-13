@@ -1,0 +1,26 @@
+{
+  "name": "voting_smartcontract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nisamozr/voting_smartcontract.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nisamozr/voting_smartcontract/issues"
+  },
+  "homepage": "https://github.com/nisamozr/voting_smartcontract#readme",
+  "dependencies": {
+    "lite-server": "^2.6.1"
+  }
+}

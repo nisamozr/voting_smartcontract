@@ -1,0 +1,22 @@
+.background{
+    background: #649173;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #DBD5A4, #649173);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #DBD5A4, #649173); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    min-height: 100vh;    
+}
+
+.box{
+    margin-top: 50px;
+    background:  #c5d4ca;
+    opacity: 0.6;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.input-box input,button{
+    
+    margin-bottom: 15px;
+}
+.profile{
+   
+}
