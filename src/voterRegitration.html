@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/web3.min.js"></script>
+    <script src="./js/app.js"></script>
 </head>
 <body>
     <div class="background">
@@ -37,7 +39,7 @@
                 </ul>
                 
                  
-                  <button class="btn btn-outline-success" >Connect</button>
+                <button class="btn btn-outline-success" id="connect" onclick="connect()" >Connect</button>
               
               </div>
             </div>
@@ -74,7 +76,7 @@
                             <input type="number" class="form-control" id="voterAge" placeholder="Age" required>
                             <input type="number" class="form-control" id="voterWard" placeholder="Ward No" required>
                             <div>
-                                <button type="submit" class="btn btn-primary">Register</button>
+                                <button type="submit" class="btn btn-primary" onclick="voterId()">Register</button>
                             </div>
                         </form>
                         </div>
