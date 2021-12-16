@@ -9,7 +9,7 @@ contract VoterId{
         uint voterIds;
     }
     uint num = 1000;
-    uint count;
+    uint public count ;
     mapping (uint => voterIdcard) public voteridcard;
 
     function voterIdReg(
@@ -60,9 +60,9 @@ contract Election is VoterId{
     mapping (uint => Voter) public voter;
     mapping (uint  => Candidates) public candidateReg;
     mapping (uint  => Candidates) public candidateslist;
-    uint candedatesCount;
-    uint voterCount;
-    uint approvedCandidateCount;
+    uint public candedatesCount;
+    uint public voterCount;
+    uint public approvedCandidateCount;
  
     modifier authorization(){
         require(msg.sender == authority,"authority can only call this function");
