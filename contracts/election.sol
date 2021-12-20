@@ -46,7 +46,7 @@ contract Election is VoterId{
         bool verify;
         uint voterId;
     }
-    struct  Candidates{
+    struct  Candidate{
         uint CandidateId;
         string name;
         uint ward;
@@ -58,9 +58,9 @@ contract Election is VoterId{
     enum candidateStatus {pending, approved, rejected}
     mapping(address => bool) public votes;
     mapping (uint => Voter) public voter;
-    mapping (uint  => Candidates) public candidateReg;
-    mapping (uint  => Candidates) public candidateslist;
-    uint public candedatesCount;
+    mapping (uint  => Candidate) public candidateReg;
+    mapping (uint  => Candidate) public candidatelist;
+    uint public candidateCount;
     uint public voterCount;
     uint public approvedCandidateCount;
  
@@ -96,7 +96,7 @@ contract Election is VoterId{
             if(voter[_voterId].verify == true){
                 revert("already verify");
             }
-            else if(_voterId < 0 || _voterId > count  ){
+            else if(_voterId <= 0 || _voterId > count  ){
                 revert("voter not found");
             }   
             else if(voter[_voterId].voterId == voteridcard[_voterId].voterIds){
@@ -107,12 +107,17 @@ contract Election is VoterId{
     }
 
     function applyForCantidate()public{
+           for(uint j=1 ; j<=candidateCount;j++){
+             if(candidateReg[j].id == msg.sender ){
+                 revert("same candidate can't be addd");
+             }
+         }
          for(uint i=1; i<= voterCount; i++ ){           
                 if(voter[i].voterAddress == msg.sender && voter[i].verify == true){
-                    candedatesCount++;
+                    candidateCount++;
                     candidateStatus _candidateStatus = candidateStatus.pending;
-                    candidateReg[candedatesCount] = Candidates(
-                        candedatesCount,
+                    candidateReg[candidateCount] = Candidate(
+                        candidateCount,
                         voter[i].voterName,
                         voter[i].voterWard,
                         0,
@@ -121,27 +126,24 @@ contract Election is VoterId{
                         _candidateStatus
                     );
 
-                }
-                else if(candidateReg[i].id == msg.sender || voterCount == 0){
-                    revert("same candidate can't be addd");
                 }          
         } 
     }
 
     function approveCadidedress(address _voteraddress) public authorization {
-         for(uint j ; j<=approvedCandidateCount;j++){
-             if(candidateslist[j].id == _voteraddress){
+         for(uint j=1 ; j<=approvedCandidateCount;j++){
+             if(candidatelist[j].id == _voteraddress){
                  revert("already aproved");
              }
          }
-        for(uint i=1; i<= candedatesCount; i++ ){
+        for(uint i=1; i<= candidateCount; i++ ){
             if(candidateReg[i].id == _voteraddress){
                 for(uint j =1; j<= count; j++){
                     if( candidateReg[i].ward == voteridcard[j].voterWard && candidateReg[i].VoterId == voteridcard[j].voterIds){
                         approvedCandidateCount++;
                         candidateStatus _candidateStatus = candidateStatus.approved;
-                        candidateReg[i] = Candidates(candedatesCount, candidateReg[i].name,candidateReg[i].ward,0,msg.sender, candidateReg[i].VoterId, _candidateStatus);
-                        candidateslist[approvedCandidateCount] = Candidates(
+                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,0,msg.sender, candidateReg[i].VoterId, _candidateStatus);
+                        candidatelist[approvedCandidateCount] = Candidate(
                             approvedCandidateCount, 
                             candidateReg[i].name,
                             candidateReg[i].ward,
@@ -161,14 +163,14 @@ contract Election is VoterId{
          uint votecont ;
          uint index ;
          for(uint i =1 ; i<=approvedCandidateCount; i++){
-             if(candidateslist[i].voteCount > votecont){
-                 votecont = candidateslist[i].voteCount;
+             if(candidatelist[i].voteCount > votecont){
+                 votecont = candidatelist[i].voteCount;
                  index = i;
              }
          }
         return(
-            candidateslist[index].name,
-            candidateslist[index].voteCount
+            candidatelist[index].name,
+            candidatelist[index].voteCount
         );   
      } 
 }

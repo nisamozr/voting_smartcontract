@@ -23,7 +23,7 @@
   <div class="background">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="./index.html">Navbar</a>
+        <a class="navbar-brand" href="./index.html">Voting system</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
           aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -45,7 +45,7 @@
           </ul>
 
 
-          <button class="btn btn-outline-success" id="connect" onclick="connect()">Connect</button>
+          <button class="btn btn-outline-success" id="connect" onclick="connect()" >Connect</button>
 
         </div>
       </div>
@@ -54,16 +54,22 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="box">
+          <!-- <div class="box" id="profilewarning">
+            <div class="alert alert-danger" role="alert">
+              You have not registered, please register first
+            </div>
+
+          </div> -->
+          <div class="box " id="display">
             <h4>Profile</h4>
             <div class="profil">
-              <p>Name : <span id="NAME">Nisamudheen</span></p>
+              <p>Name : <span id="NAME"></span></p>
               <!-- <p>Age : <span id="AGE">20</span></p> -->
-              <p>Ward : <span id="WARD">3</span></p>
-              <p>Voter Id : <span id="VOTERID">10001</span></p>
-              <p>status : <span id="STATUS">Pending</span></p>
+              <p>Ward : <span id="WARD"></span></p>
+              <p>Voter Id : <span id="VOTERID"></span></p>
+              <p>status : <span id="STATUS"></span></p>
               <br>
-              <button onclick="apply()" class="btn btn-primary">Apply to be Candidate</button>
+              <button onclick="apply()" class="btn btn-primary"> Candidate Application</button>
 
 
 
@@ -73,39 +79,20 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6  ">
-          <div class="box container pt-3">
-            <h2 class="">Voter Id Regitration</h2>
+       
+        <div class="col-md-12   ">
+          <div class="box container pt-3 w-50">
+            <h2 class="">VoterRegistration</h2>
             <hr>
             <div class="container input-box">
-              <!-- <form action="" onsubmit=""> -->
-              <input type="text" class="form-control" id="voterIdName" placeholder="Full Name" required>
-              <input type="number" class="form-control" id="voterAge" placeholder="Age" required>
-              <input type="number" class="form-control" id="voterWard" placeholder="Ward No" required>
-              <div>
-                <button class="btn btn-primary" onclick="voterId()">Register</button>
-              </div>
-
-            </div>
-
-          </div>
-
-
-
-
-        </div>
-        <div class="col-md-6  ">
-          <div class="box container pt-3">
-            <h2 class="">VoterRegitration</h2>
-            <hr>
-            <div class="container input-box">
-
-              <input type="text" class="form-control" id="voterName" placeholder="Full Name" required>
+           
+               <input type="text" class="form-control" id="voterName" placeholder="Full Name" required>
               <input type="number" class="form-control" id="voterWard1" placeholder="Ward No" required>
               <input type="number" class="form-control" id="voterID" placeholder="Voter Id No" required>
               <div>
-                <button class="btn btn-primary" onclick="voterReg()">Register</button>
+                <button class="btn btn-primary" onclick="voterReg()" >Register</button>
               </div>
+           
 
             </div>
 
@@ -118,54 +105,49 @@
     <div class="container">
       <div class="box main-box">
         <h3>voter Id </h3>
-      
 
-        <table class="table" id="table"> 
+
+        <table class="table" id="table">
           <thead class="thead-dark ">
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Ward</th>
-           
+
               <th scope="col">Id</th>
             </tr>
           </thead>
           <tbody>
-           
-           
-           
+
+
+
           </tbody>
         </table>
-        
-        
+
+
       </div>
     </div>
 
 
     <div class="container">
       <div class="box main-box">
-        <h3>Regiterd voter  </h3>
-      
-
-        <table class="table" id="tables"> 
+        <h3>Regiterd voter </h3>
+        <table class="table" id="tables">
           <thead class="thead-dark ">
             <tr>
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Ward</th>
-           
+
               <th scope="col">Verify</th>
               <th scope="col">Voter Id</th>
               <th scope="col">Address</th>
             </tr>
           </thead>
           <tbody>
-           
-           
-           
           </tbody>
         </table>
-        
-        
+
+
       </div>
     </div>
 
@@ -173,29 +155,29 @@
 
     <div class="container">
       <div class="box main-box">
-        <h3>Cadidate  </h3>
-      
+        <h3>Cadidate </h3>
 
-        <table class="table" id="tables1"> 
+
+        <table class="table" id="tables1">
           <thead class="thead-dark ">
             <tr>
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Ward</th>
-           
+
               <th scope="col">Address</th>
               <th scope="col">Status</th>
               <th scope="col">Count</th>
             </tr>
           </thead>
           <tbody>
-           
-           
-           
+
+
+
           </tbody>
         </table>
-        
-        
+
+
       </div>
     </div>
 
