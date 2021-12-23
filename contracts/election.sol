@@ -34,7 +34,7 @@ contract VoterId{
 }
 
 contract Election is VoterId{
-    address authority;
+    address public authority;
     constructor(){
         authority = msg.sender;
     }
@@ -76,13 +76,13 @@ contract Election is VoterId{
     ) 
         public
     {
-        for(uint i = 1; i <= voterCount; i++ ){
+        for(uint i = 1000; i <= 1000+ voterCount; i++ ){
             if(voter[i].voterAddress == msg.sender){
                 revert("already created");
             }
         }
         voterCount++;
-        voter[voterCount] = Voter(
+        voter[_voterId] = Voter(
             voterCount,
             _name,
             _ward,
@@ -96,14 +96,15 @@ contract Election is VoterId{
             if(voter[_voterId].verify == true){
                 revert("already verify");
             }
-            else if(_voterId <= 0 || _voterId > count  ){
+            else if(_voterId <= 1000 || _voterId > 1000+count  ){
                 revert("voter not found");
             }   
-            else if(voter[_voterId].voterId == voteridcard[_voterId].voterIds){
+            for(uint i =1; i<= count ; i++){
+                 if(voter[_voterId].voterId == voteridcard[i].voterIds){
                   voter[_voterId].verify = true;
-            }else{
-                 revert("voter id no found");
-            }       
+            } 
+
+            }                  
     }
 
     function applyForCantidate()public{
@@ -112,7 +113,7 @@ contract Election is VoterId{
                  revert("same candidate can't be addd");
              }
          }
-         for(uint i=1; i<= voterCount; i++ ){           
+         for(uint i=1001; i<=1000+ voterCount; i++ ){           
                 if(voter[i].voterAddress == msg.sender && voter[i].verify == true){
                     candidateCount++;
                     candidateStatus _candidateStatus = candidateStatus.pending;

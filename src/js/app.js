@@ -22,7 +22,7 @@ console.log("Connection Object: ", web3)
 
 
 
-const contractAdderes = "0xf84BC97499f8B4B54B808444a5047dA8d41C586D";
+const contractAdderes = "0xb9A77727a7AC95aB83E65678E5480b83805000C2";
 
 const abi = [
   {
@@ -61,7 +61,21 @@ const abi = [
   },
   {
     "inputs": [],
-    "name": "candedatesCount",
+    "name": "authority",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "candidateCount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -131,7 +145,7 @@ const abi = [
         "type": "uint256"
       }
     ],
-    "name": "candidateslist",
+    "name": "candidatelist",
     "outputs": [
       {
         "internalType": "uint256",
@@ -409,7 +423,6 @@ async function voterId() {
 	await voting.methods.voterIdReg(name, ward, age).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
 		swal("Good job!", "SUCCESS", "success");
 
-		// window.location.reload()
 	})
 	
 
@@ -466,7 +479,7 @@ async function profile() {
 	
 	await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
 		.then(async (count) => {
-			for (let index = 1; index <= count; index++) {
+			for (let index = 1001; index <= 1000+parseInt(count) ; index++) {
 				await voting.methods.voter(index)
 					.call({ from: ethereum.selectedAddress })
 					.then((result) => {
@@ -474,8 +487,7 @@ async function profile() {
 						
 					
 						if (add.toLowerCase() == ethereum.selectedAddress) {
-							
-							// document.getElementById("profilewarning").style.display = "none"
+
 							document.getElementById("display").style.display = "block"
 						
 							 document.getElementById("NAME").innerHTML = result.voterName
@@ -507,26 +519,31 @@ results()
 async function voterlist() {
 	await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
 		.then(async (count) => {
-			for (let index = 1; index <= count; index++) {
+  
+      let tcont=0;  
+			for (let index = 1001; index <= 1000+parseInt(count); index++) {
 				await voting.methods.voter(index)
 					.call({ from: ethereum.selectedAddress })
 					.then((result) => {
-
+          
+              tcont++
 
 						var table = document.getElementById("tables");
-						var row = table.insertRow(index);
+						var row = table.insertRow(tcont);
 						var cell = row.insertCell(0);
 						var cell1 = row.insertCell(1);
 						var cell2 = row.insertCell(2);
 						var cell3 = row.insertCell(3);
 						var cell4 = row.insertCell(4);
 						var cell5 = row.insertCell(5);
-						cell.innerHTML = result.index;
+            
+						cell.innerHTML = tcont;
 						cell1.innerHTML = result.voterName;
 						cell2.innerHTML = result.voterWard;
 						cell3.innerHTML = result.verify;
 						cell4.innerHTML = result.voterId;
 						cell5.innerHTML = result.voterAddress;
+           
 
 					})
 			}
@@ -560,13 +577,15 @@ function approve() {
 
 async function cadidatesList() {
 
-	await voting.methods.candedatesCount().call({ from: ethereum.selectedAddress })
+	await voting.methods.candidateCount().call({ from: ethereum.selectedAddress })
 		.then(async (count) => {
+      console.log(count)
 
-			for (let index = 1; index <= count; index++) {
+			for (let index = 1; index <=count ; index++) {
 				await voting.methods.candidateReg(index)
 					.call({ from: ethereum.selectedAddress })
 					.then((result) => {
+            console.log(result)
 
 
 						var table = document.getElementById("tables1");
@@ -636,11 +655,13 @@ jj()
 async function jj(){
   await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
   .then(async (count) => {
+    console.log("'''jgyuyguy",count)
 
     for (let index = 1; index <= count; index++) {
-      await voting.methods.candidateslist(index)
+      await voting.methods.candidatelist(index)
         .call({ from: ethereum.selectedAddress })
         .then((result) => {
+         
 
         
 
@@ -670,6 +691,8 @@ async function results() {
 		console.log("dffegtrhg",result)
 	})
 }
+
+
 
 
 
