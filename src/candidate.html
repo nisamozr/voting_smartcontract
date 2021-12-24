@@ -121,25 +121,30 @@
     vv()
     async function vv() {
       await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
-        .then(async (count) => {
+      .then(async (count) => {
+       
 
-          for (let index = 1; index <= count; index++) {
-            await voting.methods.candidateReg(index)
-              .call({ from: ethereum.selectedAddress })
-              .then((result) => {
-                let add = result.id
+        let c = 0 ;
+        for (let index = 1; index <=  parseInt(count); index++) {
+          await voting.methods.candidatelist(index)
+            .call({ from: ethereum.selectedAddress })
+            .then((result) => {
+              let add = result.id
+           
 
 
-                if (add.toLowerCase() != ethereum.selectedAddress) {
+              if (add.toLowerCase() == ethereum.selectedAddress) {
 
-                  location.href = "./candidatelogin.html"
+                c=1;
+              }
+            })
+        }
+        if(c != 1){
+          location.href = "./voterlogin.html"
 
-                }
+        }
 
-              })
-          }
-
-        })
+      })
 
 
 

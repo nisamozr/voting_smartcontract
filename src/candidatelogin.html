@@ -54,8 +54,8 @@
     <div class="login1">
         <div class="voterlogin">
   
-          <a href="" onclick="candidatelogin()" class="log "><div>Log in </div></a>
-  
+
+          <button onclick="candidatelogin()" class="log btn btn-outline-success "><div>Log in </div></button>
         </div>
       </div>
     </div>
@@ -68,33 +68,31 @@
 
   
   <script>
+    candidatelogin()
 
   
     async function candidatelogin() {
-        await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
+    
+      await voting.methods.candidatelogin(ethereum.selectedAddress).call({ from: ethereum.selectedAddress })
 		.then(async (count) => {
-            let a = 0
-			for (let index = 1; index <= count; index++) {
-				await voting.methods.candidateReg(index)
+      console.log("shdfhghgdh")
+     
+      await voting.methods.candidatelist(count)
 					.call({ from: ethereum.selectedAddress })
 					.then((result) => {
-
-						console.log(result);
-                        let add = result.id
-						
-					
-						if (add.toLowerCase() == ethereum.selectedAddress) {
-                            a =1
+       
+            if (result.id.toLowerCase() == ethereum.selectedAddress) {
+                            
                             location.href= "./candidate.html"
                             
-						}
-                       
-					})
-			}
-          
+						}else{
+               swal("Failed", "Login failed", "warning");
+            }
+
+
+          })
+    
 		})
-
-
 
     }
    

@@ -147,10 +147,11 @@
   <script>
     h()
 
-async function h(){
+    async function h(){
     await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
       .then(async (count) => {
-        console.log("hgvhgjfhgjfj")
+
+        let c = 0 ;
         for (let index = 1001; index <= 1000 + parseInt(count); index++) {
           await voting.methods.voter(index)
             .call({ from: ethereum.selectedAddress })
@@ -158,16 +159,22 @@ async function h(){
               let add = result.voterAddress
 
 
-              if (add.toLowerCase() != ethereum.selectedAddress) {
-
-                location.href = "./voterlogin.html"
+              if (add.toLowerCase() == ethereum.selectedAddress) {
+                
+                c=1;
 
               }
             })
         }
+        if(c != 1){
+          location.href = "./voterlogin.html"
+
+        }
 
       })
+  
     }
+  
 
   </script>
 

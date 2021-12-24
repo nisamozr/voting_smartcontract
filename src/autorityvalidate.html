@@ -54,7 +54,8 @@
     <div class="login1">
         <div class="voterlogin">
   
-          <a href="" onclick="autorityValidity()" class="log "><div>Log in </div></a>
+   
+          <button onclick="autorityValidity()" class="log btn btn-outline-success "><div>Log in </div></button>
   
         </div>
       </div>
@@ -66,9 +67,9 @@
 
   
     async function autorityValidity() {
-        await voting.methods.authority().call({ from: ethereum.selectedAddress }).then((result) => {
+        await voting.methods.authority().call({ from: ethereum.selectedAddress }).then(async (result) => {
             console.log(result, ethereum.selectedAddress)
-            if (ethereum.selectedAddress == result.toLowerCase()) {
+            if (ethereum.selectedAddress == await result.toLowerCase()) {
           
                 
               location.href= "./autority.html"
@@ -76,8 +77,7 @@
             }
             else{
                 
-                alert("You are not autority")
-                // swal("You are not autority");
+               swal("Failed", "Login failed", "warning");
             }
         })
 

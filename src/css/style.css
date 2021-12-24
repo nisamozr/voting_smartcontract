@@ -130,7 +130,7 @@ input:checked + .slider:before {
 
 }
 .log div{
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   text-align: center;
 
   text-align: center;

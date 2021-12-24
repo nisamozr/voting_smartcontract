@@ -4,7 +4,8 @@
   "description": "",
   "main": "truffle-config.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "js": "./src/js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -60,6 +60,8 @@ contract Election is VoterId{
     mapping (uint => Voter) public voter;
     mapping (uint  => Candidate) public candidateReg;
     mapping (uint  => Candidate) public candidatelist;
+    mapping (address => uint ) public voterlogin;
+    mapping (address => uint) public candidatelogin;
     uint public candidateCount;
     uint public voterCount;
     uint public approvedCandidateCount;
@@ -76,7 +78,7 @@ contract Election is VoterId{
     ) 
         public
     {
-        for(uint i = 1000; i <= 1000+ voterCount; i++ ){
+        for(uint i = 1001; i <= 1000+ voterCount; i++ ){
             if(voter[i].voterAddress == msg.sender){
                 revert("already created");
             }
@@ -90,6 +92,7 @@ contract Election is VoterId{
             false,
             _voterId
         );
+        voterlogin[msg.sender] = _voterId;
     }
 
     function voterVerify(uint _voterId) public authorization {
@@ -104,7 +107,9 @@ contract Election is VoterId{
                   voter[_voterId].verify = true;
             } 
 
-            }                  
+            }
+           
+                  
     }
 
     function applyForCantidate()public{
@@ -113,7 +118,7 @@ contract Election is VoterId{
                  revert("same candidate can't be addd");
              }
          }
-         for(uint i=1001; i<=1000+ voterCount; i++ ){           
+         for(uint i=1001; i<= 1000+voterCount; i++ ){           
                 if(voter[i].voterAddress == msg.sender && voter[i].verify == true){
                     candidateCount++;
                     candidateStatus _candidateStatus = candidateStatus.pending;
@@ -152,7 +157,8 @@ contract Election is VoterId{
                             _voteraddress, 
                             candidateReg[i].VoterId, 
                             _candidateStatus
-                        );    
+                        );  
+                        candidatelogin[msg.sender] = i;  
                     }
                 }
             }
