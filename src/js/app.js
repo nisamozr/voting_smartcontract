@@ -24,7 +24,7 @@ console.log("Connection Object: ", web3)
 
 
 
-const contractAdderes = "0x6A93134695A5f00D1cd32Ee70d10053b0C68bfA5";
+const contractAdderes = "0x8a5a4aE1d27C16A9f8eE7c91dF21c98B60b9BB70";
 
 const abi = [
   {
@@ -448,7 +448,7 @@ const abi = [
     "stateMutability": "nonpayable",
     "type": "function"
   }
-];
+] ;
 let voting = new web3.eth.Contract(abi, contractAdderes);
 profile()
 votlist()
@@ -525,38 +525,55 @@ async function voterIdlist() {
       }
     })
 }
-let pward;
 
+
+let a;
 async function profile() {
-
+ let pward;
   await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
+
+
+     
       for (let index = 1001; index <= 1000 + parseInt(count); index++) {
         await voting.methods.voter(index)
           .call({ from: ethereum.selectedAddress })
           .then((result) => {
-            let add = result.voterAddress
-
+            let add = result.voterAddress;
 
             if (add.toLowerCase() == ethereum.selectedAddress) {
            
+      
 
-              document.getElementById("display").style.display = "block"
+              // document.getElementById("display").style.display = "block"
 
               document.getElementById("NAME").innerHTML = result.voterName
               //  document.getElementById("AGE").innerHTML = result.voterName
-              document.getElementById("WARD").innerHTML = result.voterWard
+               document.getElementById("WARD").innerHTML = result.voterWard
               document.getElementById("VOTERID").innerHTML = result.voterId
               document.getElementById("STATUS").innerHTML = result.verify
-              pward = result.voterWard
+      
+          
+            pward = result.voterWard
 
+
+                   
 
 
             }
+         
           })
+            
       }
+       
+    
     })
+
+ a =pward
+  
 }
+ console.log("vbdj")
+ 
 
 results()
 
@@ -659,19 +676,36 @@ async function cadidatesList() {
 }
 
 async function votlist() {
-
-  await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
+   await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
-      let h = 0;
+
+
+     
+      for (let index = 1001; index <= 1000 + parseInt(count); index++) {
+        await voting.methods.voter(index)
+          .call({ from: ethereum.selectedAddress })
+          .then(async(results) => {
+            let add = results.voterAddress;
+
+            if (add.toLowerCase() == ethereum.selectedAddress) {
+           
+      
+               document.getElementById("WARD").innerHTML = results.voterWard
+             
+      
+           await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
+    .then(async (count) => {
+      let g = 0;
       for (let index = 1; index <= count; index++) {
         await voting.methods.candidatelist(index)
           .call({ from: ethereum.selectedAddress })
-          .then( (result) => {
+          .then(async (result) => {
+            let w = 5
            
-            console.log(result.ward)
-            if(result.ward == pward) {
-              console.log(result)
-              h++;
+      
+            if ( result.ward == results.voterWard) {
+      
+              g++;
 
               var btn = document.createElement("BUTTON");
               var text = document.createTextNode("Vote");
@@ -680,7 +714,7 @@ async function votlist() {
               btn.setAttribute('onclick', `vote(${result.CandidateId})`);
 
               var table = document.getElementById("tablevote");
-              var row = table.insertRow(h);
+              var row = table.insertRow(g);
               var cell = row.insertCell(0);
               var cell1 = row.insertCell(1);
               var cell2 = row.insertCell(2);
@@ -691,12 +725,27 @@ async function votlist() {
               cell2.innerHTML = result.ward;
               cell3.appendChild(btn)
             }
-            console.log('hhgyg')
+           
 
 
           })
       }
     })
+
+                   
+
+
+            }
+         
+          })
+            
+      }
+       
+    
+    })
+  
+
+ 
 }
 
 function vote(id) {
@@ -710,6 +759,7 @@ function vote(id) {
 jj()
 
 async function jj() {
+ 
   await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
 

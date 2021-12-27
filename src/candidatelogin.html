@@ -20,87 +20,89 @@
 <body>
   <div class="background">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="./index.html">Voting system</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link " aria-current="page" href="./index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="./voterlogin.html">Voter Registration</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="./candidatelogin.html">Candidate</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./autorityvalidate.html">Autority</a>
-              </li>
-              <!-- <li class="nav-item">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./index.html">Voting system</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link " aria-current="page" href="./index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="./voterlogin.html">Voter Registration</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./candidatelogin.html">Candidate</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./autorityvalidate.html">Autority</a>
+            </li>
+            <!-- <li class="nav-item">
                 <a class="nav-link disabled">Disabled</a>
               </li> -->
-            </ul>
-            
-             
-              <button class="btn btn-outline-success" id="connect" onclick="connect()" >Connect</button>
-          
-          </div>
-        </div>
-      </nav>
+          </ul>
 
-    <div class="login1">
-        <div class="voterlogin">
-  
 
-          <button onclick="candidatelogin()" class="log btn btn-outline-success "><div>Log in </div></button>
+          <button class="btn btn-outline-success c" id="connect" onclick="connect()">Connect</button>
+
         </div>
       </div>
+    </nav>
+
+    <div class="login1">
+      <div class="voterlogin">
+
+
+        <button onclick="candidatelogind()" class="log btn btn-outline-success ">
+          <div>Log in </div>
+        </button>
+      </div>
     </div>
-   
-
-
-
-     
   </div>
 
-  
-  <script>
-    candidatelogin()
-
-  
-    async function candidatelogin() {
-    
-      await voting.methods.candidatelogin(ethereum.selectedAddress).call({ from: ethereum.selectedAddress })
-		.then(async (count) => {
-      console.log("shdfhghgdh")
-     
-      await voting.methods.candidatelist(count)
-					.call({ from: ethereum.selectedAddress })
-					.then((result) => {
-       
-            if (result.id.toLowerCase() == ethereum.selectedAddress) {
-                            
-                            location.href= "./candidate.html"
-                            
-						}else{
-               swal("Failed", "Login failed", "warning");
-            }
 
 
-          })
-    
-		})
 
-    }
-   
 
-</script>
-
+  </div>
   <script src="./js/web3.min.js"></script>
   <script src="./js/app.js"></script>
+
+  <script>
+    // candidatelogin()
+
+
+    async function candidatelogind() {
+
+      await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
+        .then(async (count) => {
+          console.log(count)
+          let er = 0;
+          for (let i = 1; i <= count; i++) {
+            await voting.methods.candidatelist(i)
+              .call({ from: ethereum.selectedAddress })
+              .then((result) => {
+                er = 0
+                if (result.id.toLowerCase() == ethereum.selectedAddress) {
+                  location.href = "./candidate.html"
+                } else {
+                  er = 1
+                }
+              })
+          }
+          if (er == 1) {
+            swal("Failed", "Login failed", "warning");
+          }
+        })
+    }
+
+  </script>
+
+
+
 
 </body>
 

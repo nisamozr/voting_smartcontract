@@ -1,62 +1,32 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.7;
 
-contract VoterId{
- struct voterIdcard{
-        string voterName;
-        uint voterWard;
-        uint age;
-        uint voterIds;
-    }
-    uint num = 1000;
-    uint public count ;
-    mapping (uint => voterIdcard) public voteridcard;
-
-    function voterIdReg(
-        string memory _name,
-        uint _ward,
-        uint _age 
-    ) 
-        public
-    {
-        require(
-            _age >= 18,
-            "This person is not eligible for voters Id"
-        );
-        count++;
-        voteridcard[count] = voterIdcard(
-            _name,
-            _ward,
-            _age,
-            num+count
-        );
-    }
-}
-
-contract Election is VoterId{
+contract Election {
     address public authority;
     constructor(){
         authority = msg.sender;
     }
      struct Voter{
-        uint index;
+        uint RegId;
         string voterName;
         uint voterWard;
         address voterAddress;
-        bool verify;
         uint voterId;
+        bool status;
+        
     }
     struct  Candidate{
-        uint CandidateId;
+        uint CandidateRegId;
         string name;
         uint ward;
-        uint voteCount;
         address id;
+        uint vote;
         uint VoterId;
-        candidateStatus  status;   
+        candidateStatus  status;
+        string remark;   
     } 
     enum candidateStatus {pending, approved, rejected}
-    mapping(address => bool) public votes;
+    mapping (address => bool) public votes;
     mapping (uint => Voter) public voter;
     mapping (uint  => Candidate) public candidateReg;
     mapping (uint  => Candidate) public candidatelist;
@@ -73,112 +43,151 @@ contract Election is VoterId{
     
     function voterRegistration(
         string memory _name, 
-        uint _ward, 
-        uint _voterId 
+        uint _ward 
     ) 
         public
     {
-        for(uint i = 1001; i <= 1000+ voterCount; i++ ){
+        for(uint i = 1; i <=  voterCount; i++ ){
             if(voter[i].voterAddress == msg.sender){
                 revert("already created");
             }
         }
         voterCount++;
-        voter[_voterId] = Voter(
+        voter[voterCount] = Voter(
             voterCount,
             _name,
             _ward,
             msg.sender,
-            false,
-            _voterId
+            1,
+            false
         );
-        voterlogin[msg.sender] = _voterId;
+        voterlogin[msg.sender] = voterCount;
     }
+    uint voterIdgenerator = 1000;
 
-    function voterVerify(uint _voterId) public authorization {
-            if(voter[_voterId].verify == true){
-                revert("already verify");
+    function allocateId(uint _voterRegId) public authorization {
+            if(voter[_voterRegId].status == true){
+                revert("Already voter ID Allocated ");
             }
-            else if(_voterId <= 1000 || _voterId > 1000+count  ){
-                revert("voter not found");
-            }   
-            for(uint i =1; i<= count ; i++){
-                 if(voter[_voterId].voterId == voteridcard[i].voterIds){
-                  voter[_voterId].verify = true;
+            // else if(_voterRegId <= 0 || _voterRegId > count  ){
+            //     revert("voter not found");
+            // }   
+        
+                else if(voter[_voterRegId].voterId == 1){
+                     voterIdgenerator++;
+                      voter[_voterRegId].voterId = voterIdgenerator;
+                  voter[_voterRegId].status = true;
             } 
-
+            else{
+                revert("Fist you need to register");
             }
-           
-                  
+
+                         
     }
 
-    function applyForCantidate()public{
+    function cantidateRegistration(string memory _name, uint _ward, uint _voterId, string memory _remark)public{
            for(uint j=1 ; j<=candidateCount;j++){
              if(candidateReg[j].id == msg.sender ){
-                 revert("same candidate can't be addd");
+                 revert("same candidate can't be register again");
              }
          }
-         for(uint i=1001; i<= 1000+voterCount; i++ ){           
-                if(voter[i].voterAddress == msg.sender && voter[i].verify == true){
-                    candidateCount++;
+
+         candidateCount++;
                     candidateStatus _candidateStatus = candidateStatus.pending;
                     candidateReg[candidateCount] = Candidate(
                         candidateCount,
-                        voter[i].voterName,
-                        voter[i].voterWard,
+                        _name,
+                        _ward,
+                        msg.sender, 
                         0,
-                        voter[i].voterAddress, 
-                        voter[i].voterId, 
-                        _candidateStatus
+                        _voterId, 
+                        _candidateStatus,
+                        _remark
+                     
                     );
-
-                }          
-        } 
     }
 
-    function approveCadidedress(address _voteraddress) public authorization {
+    function approveCadidedress(address _voteraddress, string memory _remark) public authorization {
          for(uint j=1 ; j<=approvedCandidateCount;j++){
              if(candidatelist[j].id == _voteraddress){
                  revert("already aproved");
              }
          }
+         uint flag = 0;
         for(uint i=1; i<= candidateCount; i++ ){
             if(candidateReg[i].id == _voteraddress){
-                for(uint j =1; j<= count; j++){
-                    if( candidateReg[i].ward == voteridcard[j].voterWard && candidateReg[i].VoterId == voteridcard[j].voterIds){
+                
                         approvedCandidateCount++;
                         candidateStatus _candidateStatus = candidateStatus.approved;
-                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,0,msg.sender, candidateReg[i].VoterId, _candidateStatus);
+                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,msg.sender,0, candidateReg[i].VoterId, _candidateStatus,_remark);
                         candidatelist[approvedCandidateCount] = Candidate(
                             approvedCandidateCount, 
                             candidateReg[i].name,
                             candidateReg[i].ward,
-                            0,
                             _voteraddress, 
+                            0,
                             candidateReg[i].VoterId, 
-                            _candidateStatus
+                            _candidateStatus,
+                            _remark
                         );  
-                        candidatelogin[msg.sender] = i;  
-                    }
-                }
-            }
+                        candidatelogin[_voteraddress] = i;  
+
+                        flag =1;
+                      }
+
+        }
+        if(flag != 1){
+            revert("ther is no such candidate");
+        }
+     }
+       function RejectedCadidedress(address _voteraddress, string memory _remark) public authorization {
+         for(uint j=1 ; j<=approvedCandidateCount;j++){
+             if(candidatelist[j].id == _voteraddress){
+                 revert("already aproved");
+             }
+         }
+         uint flag = 0;
+        for(uint i=1; i<= candidateCount; i++ ){
+            if(candidateReg[i].id == _voteraddress){
+                
+                        approvedCandidateCount++;
+                        candidateStatus _candidateStatus = candidateStatus.rejected;
+                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,msg.sender,0, candidateReg[i].VoterId, _candidateStatus,_remark);
+                        candidatelist[approvedCandidateCount] = Candidate(
+                            approvedCandidateCount, 
+                            candidateReg[i].name,
+                            candidateReg[i].ward,
+                            _voteraddress, 
+                            0,
+                            candidateReg[i].VoterId, 
+                            _candidateStatus,
+                            _remark
+                        );  
+                        candidatelogin[_voteraddress] = i;  
+
+                        flag =1;
+                      }
+
+        }
+        if(flag != 1){
+            revert("ther is no such candidate");
         }
      }
 
      function result() public view returns(string memory , uint ){
          require(approvedCandidateCount>=1, "there is no candidate");
-         uint votecont ;
+         uint votecount ;
          uint index ;
          for(uint i =1 ; i<=approvedCandidateCount; i++){
-             if(candidatelist[i].voteCount > votecont){
-                 votecont = candidatelist[i].voteCount;
-                 index = i;
-             }
-         }
-        return(
+             if(candidatelist[i].vote > votecount){
+                 votecount = candidatelist[i].vote;
+                 index = i ;
+                }
+          }
+         return(
             candidatelist[index].name,
-            candidatelist[index].voteCount
-        );   
+            candidatelist[index].vote
+            );   
      } 
 }
 
