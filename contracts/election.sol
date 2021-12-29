@@ -85,7 +85,7 @@ contract Election {
                          
     }
 
-    function cantidateRegistration(string memory _name, uint _ward, uint _voterId, string memory _remark)public{
+    function cantidateRegistration(string memory _name, uint _ward, uint _voterId)public{
            for(uint j=1 ; j<=candidateCount;j++){
              if(candidateReg[j].id == msg.sender ){
                  revert("same candidate can't be register again");
@@ -102,9 +102,10 @@ contract Election {
                         0,
                         _voterId, 
                         _candidateStatus,
-                        _remark
+                        ""
                      
                     );
+                    candidatelogin[msg.sender] = candidateCount;  
     }
 
     function approveCadidedress(address _voteraddress, string memory _remark) public authorization {
@@ -119,7 +120,7 @@ contract Election {
                 
                         approvedCandidateCount++;
                         candidateStatus _candidateStatus = candidateStatus.approved;
-                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,msg.sender,0, candidateReg[i].VoterId, _candidateStatus,_remark);
+                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,_voteraddress,0, candidateReg[i].VoterId, _candidateStatus,_remark);
                         candidatelist[approvedCandidateCount] = Candidate(
                             approvedCandidateCount, 
                             candidateReg[i].name,
@@ -130,7 +131,7 @@ contract Election {
                             _candidateStatus,
                             _remark
                         );  
-                        candidatelogin[_voteraddress] = i;  
+                        
 
                         flag =1;
                       }
@@ -152,7 +153,7 @@ contract Election {
                 
                         approvedCandidateCount++;
                         candidateStatus _candidateStatus = candidateStatus.rejected;
-                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,msg.sender,0, candidateReg[i].VoterId, _candidateStatus,_remark);
+                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,_voteraddress,0, candidateReg[i].VoterId, _candidateStatus,_remark);
                         candidatelist[approvedCandidateCount] = Candidate(
                             approvedCandidateCount, 
                             candidateReg[i].name,
@@ -174,7 +175,7 @@ contract Election {
         }
      }
 
-     function result() public view returns(string memory , uint ){
+     function result() public view returns(string memory, uint, uint){
          require(approvedCandidateCount>=1, "there is no candidate");
          uint votecount ;
          uint index ;
@@ -186,7 +187,8 @@ contract Election {
           }
          return(
             candidatelist[index].name,
-            candidatelist[index].vote
+            candidatelist[index].vote,
+            candidatelist[index].ward
             );   
      } 
 }

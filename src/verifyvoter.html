@@ -51,18 +51,41 @@
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <a href="./verifyvoter.html" class="btn btn-primary">Verify and Voter Id alloction</a>
-      <a href="./candidateapprove.html" class="btn btn-primary">Aprove Candidate</a>
+ 
+    <div class="container ">
+
+      <div class="row g">
+        <div class="col-md-6  ">
+          <div class="box container pt-3">
+            <h2 class=""> Verify Voter & Id Allocation</h2>
+            <hr>
+            <div class="container input-box">
+
+              <input type="number" class="form-control" id="vid" placeholder="Registertion id" required>
+              <div>
+                <button class="btn btn-primary" onclick="verifyVoter()">Verify</button>
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+     
+
       </div>
-  
-      <div class="container">
+   
+
+    </div>
+
+    <div class="container">
         <div class="box main-box">
           <h3>Regiterd voter </h3>
-          <table class="table" id="tables">
+          <table class="table" id="tablesq">
             <thead class="thead-dark ">
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">Reg id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Ward</th>
   
@@ -82,37 +105,6 @@
 
     
 
-
-    <div class="container ">
-      <div class="box main-box">
-        <h3>Cadidate </h3>
-
-
-        <table class="table" id="tables1">
-          <thead class="thead-dark ">
-            <tr>
-              <th scope="col">Reg Id</th>
-              <th scope="col">Name</th>
-              <th scope="col">Ward</th>
-              <th scope="col">Address</th>
-              <th scope="col">Status</th>
-          
-            </tr>
-          </thead>
-          <tbody>
-
-
-
-          </tbody>
-        </table>
-
-
-      </div>
-    </div>
-  </div>
-
-  
-
    
   </div>
  
@@ -131,13 +123,61 @@
               location.href= "./autorityvalidate.html"
 
             }
-           
+            
             
         })
 
 
 
     }
+
+    h()
+   async function h(){
+    
+              await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
+    .then(async (count) => {
+ 
+      let tcont = 0;
+      for (let index = 1; index <= count; index++) {
+        await voting.methods.voter(index)
+          .call({ from: ethereum.selectedAddress })
+          .then((result) => {
+            console.log(result,"fefffffff")
+            if(result.status != true){
+            tcont++
+
+            var table = document.getElementById("tablesq");
+            var row = table.insertRow(tcont);
+            var cell = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+
+            cell.innerHTML = result.RegId;
+            cell1.innerHTML = result.voterName;
+            cell2.innerHTML = result.voterWard;
+            console.log(result.voterId ,  1)
+            if( result.voterId == 1){
+              cell4.innerHTML = "Not allocated";
+            }else{
+              cell4.innerHTML = result.voterId;
+            }
+            cell3.innerHTML = result.status;
+          
+            cell5.innerHTML = result.voterAddress;
+          }
+
+          })
+          if(tcont == 0){
+            
+          }
+      }
+    })
+            
+    }
+
    
 
 </script>

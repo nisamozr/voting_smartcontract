@@ -24,12 +24,36 @@ console.log("Connection Object: ", web3)
 
 
 
-const contractAdderes = "0x8a5a4aE1d27C16A9f8eE7c91dF21c98B60b9BB70";
+const contractAdderes = "0x03aBedA9E8B72fc76e98850649C05b8E5ee3B199";
 
 const abi = [
   {
-    "inputs": [],
-    "name": "applyForCantidate",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_voteraddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_remark",
+        "type": "string"
+      }
+    ],
+    "name": "RejectedCadidedress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_voterRegId",
+        "type": "uint256"
+      }
+    ],
+    "name": "allocateId",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -40,6 +64,11 @@ const abi = [
         "internalType": "address",
         "name": "_voteraddress",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_remark",
+        "type": "string"
       }
     ],
     "name": "approveCadidedress",
@@ -101,7 +130,7 @@ const abi = [
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "CandidateId",
+        "name": "CandidateRegId",
         "type": "uint256"
       },
       {
@@ -115,14 +144,14 @@ const abi = [
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "voteCount",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "id",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "vote",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -133,6 +162,11 @@ const abi = [
         "internalType": "enum Election.candidateStatus",
         "name": "status",
         "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "remark",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -151,7 +185,7 @@ const abi = [
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "CandidateId",
+        "name": "CandidateRegId",
         "type": "uint256"
       },
       {
@@ -165,14 +199,14 @@ const abi = [
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "voteCount",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "id",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "vote",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -183,6 +217,11 @@ const abi = [
         "internalType": "enum Election.candidateStatus",
         "name": "status",
         "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "remark",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -210,18 +249,27 @@ const abi = [
     "constant": true
   },
   {
-    "inputs": [],
-    "name": "count",
-    "outputs": [
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "_ward",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_voterId",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
+    "name": "cantidateRegistration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -231,6 +279,11 @@ const abi = [
         "internalType": "string",
         "name": "",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -254,7 +307,7 @@ const abi = [
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "index",
+        "name": "RegId",
         "type": "uint256"
       },
       {
@@ -273,14 +326,14 @@ const abi = [
         "type": "address"
       },
       {
-        "internalType": "bool",
-        "name": "verify",
-        "type": "bool"
-      },
-      {
         "internalType": "uint256",
         "name": "voterId",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -312,88 +365,12 @@ const abi = [
         "internalType": "uint256",
         "name": "_ward",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_age",
-        "type": "uint256"
-      }
-    ],
-    "name": "voterIdReg",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_ward",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_voterId",
-        "type": "uint256"
       }
     ],
     "name": "voterRegistration",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_voterId",
-        "type": "uint256"
-      }
-    ],
-    "name": "voterVerify",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "voteridcard",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "voterName",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "voterWard",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "age",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "voterIds",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
   },
   {
     "inputs": [
@@ -439,7 +416,7 @@ const abi = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "candidatesId",
+        "name": "candidateId",
         "type": "uint256"
       }
     ],
@@ -448,41 +425,24 @@ const abi = [
     "stateMutability": "nonpayable",
     "type": "function"
   }
-] ;
+];
 let voting = new web3.eth.Contract(abi, contractAdderes);
 profile()
 votlist()
-voterIdlist()
+
 voterlist()
 cadidatesList()
 
-async function voterId() {
 
-  let name = document.getElementById('voterIdName').value
-  let age = document.getElementById('voterAge').value
-  let ward = document.getElementById('voterWard').value
-
-  await voting.methods.voterIdReg(name, ward, age).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
-    swal("SUCCESS", "voter id registration", "success");
-
-  }).catch((error) => {
-
-    swal("Failed", "Not eligible for voter Id", "warning");
-
-
-  })
-
-
-}
 
 async function voterReg() {
 
   let name = document.getElementById('voterName').value
   let ward = document.getElementById('voterWard1').value
-  let id = document.getElementById('voterID').value
+
 
   web3.eth.handleRevert = true
-  await voting.methods.voterRegistration(name, ward, id).send({ from: ethereum.selectedAddress, gasLimit: "927000" })
+  await voting.methods.voterRegistration(name, ward).send({ from: ethereum.selectedAddress, gasLimit: "927000" })
     .then((result) => {
       swal("SUCCESS", "voter registration", "success");
     }).catch((err) => {
@@ -502,78 +462,83 @@ async function voterReg() {
 
 
 }
-async function voterIdlist() {
-  await voting.methods.count().call({ from: ethereum.selectedAddress })
-    .then(async (count) => {
-      for (let index = 1; index <= count; index++) {
-        await voting.methods.voteridcard(index)
-          .call({ from: ethereum.selectedAddress })
-          .then((result) => {
+// async function voterIdlist() {
+//   await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
+//     .then(async (count) => {
+//       for (let index = 1; index <= count; index++) {
+//         await voting.methods.voteridcard(index)
+//           .call({ from: ethereum.selectedAddress })
+//           .then((result) => {
 
 
 
-            var table = document.getElementById("table");
-            var row = table.insertRow(index);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            cell1.innerHTML = result.voterName;
-            cell2.innerHTML = result.voterWard;
-            cell3.innerHTML = result.voterIds;
+//             var table = document.getElementById("table");
+//             var row = table.insertRow(index);
+//             var cell1 = row.insertCell(0);
+//             var cell2 = row.insertCell(1);
+//             var cell3 = row.insertCell(2);
+//             cell1.innerHTML = result.voterName;
+//             cell2.innerHTML = result.voterWard;
+//             cell3.innerHTML = result.voterIds;
 
-          })
-      }
-    })
-}
+//           })
+//       }
+//     })
+// }
 
 
 let a;
 async function profile() {
- let pward;
+  let pward;
   await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
 
 
-     
-      for (let index = 1001; index <= 1000 + parseInt(count); index++) {
+
+      for (let index = 1; index <= parseInt(count); index++) {
         await voting.methods.voter(index)
           .call({ from: ethereum.selectedAddress })
           .then((result) => {
             let add = result.voterAddress;
 
             if (add.toLowerCase() == ethereum.selectedAddress) {
-           
-      
+
+
 
               // document.getElementById("display").style.display = "block"
 
               document.getElementById("NAME").innerHTML = result.voterName
               //  document.getElementById("AGE").innerHTML = result.voterName
-               document.getElementById("WARD").innerHTML = result.voterWard
+              document.getElementById("WARD").innerHTML = result.voterWard
               document.getElementById("VOTERID").innerHTML = result.voterId
-              document.getElementById("STATUS").innerHTML = result.verify
-      
-          
-            pward = result.voterWard
+              if (result.status == true) {
+                document.getElementById("STATUS").innerHTML = "Approved"
+              } else {
+                document.getElementById("STATUS").innerHTML = "Not Approved"
+              }
 
 
-                   
+
+              pward = result.voterWard
+
+
+
 
 
             }
-         
+
           })
-            
+
       }
-       
-    
+
+
     })
 
- a =pward
-  
+  a = pward
+
 }
- console.log("vbdj")
- 
+
+
 
 results()
 
@@ -582,10 +547,11 @@ async function voterlist() {
     .then(async (count) => {
 
       let tcont = 0;
-      for (let index = 1001; index <= 1000 + parseInt(count); index++) {
+      for (let index = 1; index <= count; index++) {
         await voting.methods.voter(index)
           .call({ from: ethereum.selectedAddress })
           .then((result) => {
+            console.log(result, "fefffffff")
 
             tcont++
 
@@ -598,11 +564,17 @@ async function voterlist() {
             var cell4 = row.insertCell(4);
             var cell5 = row.insertCell(5);
 
-            cell.innerHTML = tcont;
+            cell.innerHTML = result.RegId;
             cell1.innerHTML = result.voterName;
             cell2.innerHTML = result.voterWard;
-            cell3.innerHTML = result.verify;
-            cell4.innerHTML = result.voterId;
+          
+            if (result.voterId == 1) {
+              cell4.innerHTML = "Not allocated";
+            } else {
+              cell4.innerHTML = result.voterId;
+            }
+            cell3.innerHTML = result.status;
+
             cell5.innerHTML = result.voterAddress;
 
 
@@ -611,11 +583,13 @@ async function voterlist() {
     })
 }
 
+
+
 function verifyVoter() {
 
 
   let id = document.getElementById('vid').value
-  voting.methods.voterVerify(id).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
+  voting.methods.allocateId(id).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
     swal("Verified", `${id} voter Id verified`, "success");
   }).catch((err) => {
     swal("Failed", `${err.message}`, "warning");
@@ -631,13 +605,30 @@ function apply() {
 
 }
 function approve() {
-  let id = document.getElementById('CandidateApprove').value
+  let remark = document.getElementById("remark").value;
+  let id = document.getElementById("radd").value;
 
 
-  voting.methods.approveCadidedress(id).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
+
+  voting.methods.approveCadidedress(id, remark).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then((result) => {
     swal("SUCCESS", "Approved", "success");
   }).catch((err) => {
     swal("Failed", `${err.message}`, "warning");
+  })
+
+}
+function reject() {
+  // let id = document.getElementById('CandidateApprove').value
+
+  let id = document.getElementById("radd").value;
+  let remark = document.getElementById("remark").value;
+  console.log(remark)
+
+
+  voting.methods.RejectedCadidedress(id, remark).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
+    swal("SUCCESS", "Rejected", "success");
+  }).catch((err) => {
+    swal("Failed", `${err.message}`, "error");
   })
 
 }
@@ -663,12 +654,24 @@ async function cadidatesList() {
             var cell3 = row.insertCell(3);
             var cell4 = row.insertCell(4);
             var cell5 = row.insertCell(5);
-            cell.innerHTML = result.CandidateId;
+            cell.innerHTML = result.CandidateRegId;
             cell1.innerHTML = result.name;
             cell2.innerHTML = result.ward;
             cell3.innerHTML = result.id;
-            cell4.innerHTML = result.status;
-            cell5.innerHTML = result.voteCount;
+            if (result.status == 0) {
+              cell4.style.color = "yellow"
+
+              cell4.innerHTML = "pending";
+            }
+            else if (result.status == 1) {
+              cell.style.color = "green"
+              cell4.innerHTML = "Approved"
+            } else {
+              cell.style.color = "red"
+              cell4.innerHTML = "Rejected"
+            }
+
+
 
           })
       }
@@ -676,76 +679,76 @@ async function cadidatesList() {
 }
 
 async function votlist() {
-   await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
+  await voting.methods.voterCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
 
 
-     
+
       for (let index = 1001; index <= 1000 + parseInt(count); index++) {
         await voting.methods.voter(index)
           .call({ from: ethereum.selectedAddress })
-          .then(async(results) => {
+          .then(async (results) => {
             let add = results.voterAddress;
 
             if (add.toLowerCase() == ethereum.selectedAddress) {
-           
-      
-               document.getElementById("WARD").innerHTML = results.voterWard
-             
-      
-           await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
-    .then(async (count) => {
-      let g = 0;
-      for (let index = 1; index <= count; index++) {
-        await voting.methods.candidatelist(index)
-          .call({ from: ethereum.selectedAddress })
-          .then(async (result) => {
-            let w = 5
-           
-      
-            if ( result.ward == results.voterWard) {
-      
-              g++;
 
-              var btn = document.createElement("BUTTON");
-              var text = document.createTextNode("Vote");
-              btn.appendChild(text)
-              btn.setAttribute("class", "btn btn-warning");
-              btn.setAttribute('onclick', `vote(${result.CandidateId})`);
 
-              var table = document.getElementById("tablevote");
-              var row = table.insertRow(g);
-              var cell = row.insertCell(0);
-              var cell1 = row.insertCell(1);
-              var cell2 = row.insertCell(2);
-              var cell3 = row.insertCell(3);
+              document.getElementById("WARD").innerHTML = results.voterWard
 
-              cell.innerHTML = result.CandidateId;
-              cell1.innerHTML = result.name;
-              cell2.innerHTML = result.ward;
-              cell3.appendChild(btn)
+
+              await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
+                .then(async (count) => {
+                  let g = 0;
+                  for (let index = 1; index <= count; index++) {
+                    await voting.methods.candidatelist(index)
+                      .call({ from: ethereum.selectedAddress })
+                      .then(async (result) => {
+                        let w = 5
+
+
+                        if (result.ward == results.voterWard) {
+
+                          g++;
+
+                          var btn = document.createElement("BUTTON");
+                          var text = document.createTextNode("Vote");
+                          btn.appendChild(text)
+                          btn.setAttribute("class", "btn btn-warning");
+                          btn.setAttribute('onclick', `vote(${result.CandidateId})`);
+
+                          var table = document.getElementById("tablevote");
+                          var row = table.insertRow(g);
+                          var cell = row.insertCell(0);
+                          var cell1 = row.insertCell(1);
+                          var cell2 = row.insertCell(2);
+                          var cell3 = row.insertCell(3);
+
+                          cell.innerHTML = result.CandidateId;
+                          cell1.innerHTML = result.name;
+                          cell2.innerHTML = result.ward;
+                          cell3.appendChild(btn)
+                        }
+
+
+
+                      })
+                  }
+                })
+
+
+
+
             }
-           
-
 
           })
+
       }
+
+
     })
 
-                   
 
 
-            }
-         
-          })
-            
-      }
-       
-    
-    })
-  
-
- 
 }
 
 function vote(id) {
@@ -759,7 +762,7 @@ function vote(id) {
 jj()
 
 async function jj() {
- 
+
   await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
 
@@ -773,7 +776,7 @@ async function jj() {
             var cell = row.insertCell(0);
             var cell1 = row.insertCell(1);
             cell.innerHTML = result.name;
-            cell1.innerHTML = result.voteCount;
+            cell1.innerHTML = result.vote;
           })
       }
     })
