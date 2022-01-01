@@ -1,8 +1,8 @@
 .background{
-  background: #44A08D;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #093637, #44A08D);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #093637, #44A08D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-   min-height: 100vh;    
+  background: #0F2027;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    min-height: 100vh;    
     position: relative;
   
 }
@@ -193,5 +193,14 @@ box-shadow: -5px 2px 23px -1px rgba(0,0,0,0.75);
   justify-content: center;
 }
 #hh{
+  display: none;
+}
+#Candi{
+  display: none;
+}
+#vol{
+  display: none;
+}
+#vol1{
   display: none;
 }

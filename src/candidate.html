@@ -72,8 +72,9 @@
               <!-- <p>Age : <span id="AGE">20</span></p> -->
               <p>Ward : <span id="WARDa"></span></p>
               <p>Voter Id : <span id="VOTERIDa"></span></p>
-              <p>Status : <span id="STATUSa"></span></p>
-              <p>Remark : <span id="remark"></span></p>
+              <p>Vote  : <span id="VOTe"></span></p>
+              <!-- <p>Status : <span id="STATUSa"></span></p> -->
+              <!-- <p>Remark : <span id="remark"></span></p> -->
               <br>
 
 
@@ -156,44 +157,63 @@
 
     async function cprofile() {
   let pward;
-  await voting.methods.candidateCount().call({ from: ethereum.selectedAddress })
+  await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
     .then(async (count) => {
 
-
+      let cc=0;
       for (let index = 1; index <= parseInt(count); index++) {
-        await voting.methods.candidateReg(index)
+        await voting.methods.candidatelist(index)
           .call({ from: ethereum.selectedAddress })
           .then((result) => {
             let add = result.id;
+            let g = result.ward;
+            let wa;
+         
 
             if (add.toLowerCase() == ethereum.selectedAddress) {
+              this.wa = result.ward
 
 
 
               // document.getElementById("display").style.display = "block"
+
 
               document.getElementById("NAMEa").innerHTML = result.name
               //  document.getElementById("AGE").innerHTML = result.voterName
               document.getElementById("WARDa").innerHTML = result.ward
               document.getElementById("VOTERIDa").innerHTML = result.VoterId
               if (result.status == 0) {
-                document.getElementById("STATUSa").innerHTML = "Pending"
+                // document.getElementById("STATUSa").innerHTML = "Pending"
               } else if(result.status == 1){
-                document.getElementById("STATUSa").innerHTML = "Approved"
+                // document.getElementById("STATUSa").innerHTML = "Approved"
+                document.getElementById("VOTe").innerHTML = result.vote
+
               }
               else {
-                document.getElementById("STATUSa").innerHTML = "Rejected"
+                // document.getElementById("STATUSa").innerHTML = "Rejected"
               }
-              document.getElementById("remark").innerHTML = result.remark
+              // document.getElementById("remark").innerHTML = result.remark
               
 
 
-              pward = result.voterWard
+              // pward = result.voterWard
 
 
 
 
 
+            }
+          let d=  document.getElementById("WARDa").innerText
+
+            if(g == d ){
+              cc++
+              console.log(result,"jhhgugouyggi")
+              var table = document.getElementById("tableresult");
+            var row = table.insertRow(cc);
+            var cell = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            cell.innerHTML = result.name;
+            cell1.innerHTML = result.vote;
             }
 
           })

@@ -24,7 +24,7 @@ console.log("Connection Object: ", web3)
 
 
 
-const contractAdderes = "0x03aBedA9E8B72fc76e98850649C05b8E5ee3B199";
+const contractAdderes = "0xC0Aa77c6583DB13026bdFe3B08B7C0422F432e69";
 
 const abi = [
   {
@@ -522,10 +522,18 @@ async function profile() {
               pward = result.voterWard
 
 
+              if (result.status == true) {
+                document.getElementById("vol").style.display = "block"
+              }
+              if(result.status == false){
+                document.getElementById("vol1").style.display = "block"
+                
+              }
 
 
 
             }
+           
 
           })
 
@@ -612,6 +620,7 @@ function approve() {
 
   voting.methods.approveCadidedress(id, remark).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then((result) => {
     swal("SUCCESS", "Approved", "success");
+    location.reload();
   }).catch((err) => {
     swal("Failed", `${err.message}`, "warning");
   })
@@ -627,6 +636,7 @@ function reject() {
 
   voting.methods.RejectedCadidedress(id, remark).send({ from: ethereum.selectedAddress, gasLimit: "927000" }).then(result => {
     swal("SUCCESS", "Rejected", "success");
+    location.reload();
   }).catch((err) => {
     swal("Failed", `${err.message}`, "error");
   })
@@ -653,7 +663,7 @@ async function cadidatesList() {
             var cell2 = row.insertCell(2);
             var cell3 = row.insertCell(3);
             var cell4 = row.insertCell(4);
-            var cell5 = row.insertCell(5);
+            // var cell5 = row.insertCell(5);
             cell.innerHTML = result.CandidateRegId;
             cell1.innerHTML = result.name;
             cell2.innerHTML = result.ward;
@@ -684,7 +694,7 @@ async function votlist() {
 
 
 
-      for (let index = 1001; index <= 1000 + parseInt(count); index++) {
+      for (let index = 1; index <= parseInt(count); index++) {
         await voting.methods.voter(index)
           .call({ from: ethereum.selectedAddress })
           .then(async (results) => {
@@ -693,7 +703,7 @@ async function votlist() {
             if (add.toLowerCase() == ethereum.selectedAddress) {
 
 
-              document.getElementById("WARD").innerHTML = results.voterWard
+              // document.getElementById("WARD").innerHTML = results.voterWard
 
 
               await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
@@ -714,7 +724,7 @@ async function votlist() {
                           var text = document.createTextNode("Vote");
                           btn.appendChild(text)
                           btn.setAttribute("class", "btn btn-warning");
-                          btn.setAttribute('onclick', `vote(${result.CandidateId})`);
+                          btn.setAttribute('onclick', `vote(${result.CandidateRegId})`);
 
                           var table = document.getElementById("tablevote");
                           var row = table.insertRow(g);
@@ -723,7 +733,7 @@ async function votlist() {
                           var cell2 = row.insertCell(2);
                           var cell3 = row.insertCell(3);
 
-                          cell.innerHTML = result.CandidateId;
+                          cell.innerHTML = result.CandidateRegId;
                           cell1.innerHTML = result.name;
                           cell2.innerHTML = result.ward;
                           cell3.appendChild(btn)
@@ -759,29 +769,44 @@ function vote(id) {
     swal("Failed", `${err.message}`, "warning");
   })
 }
-jj()
+// jj()
 
-async function jj() {
+// async function jj() {
 
-  await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
-    .then(async (count) => {
+//   await voting.methods.approvedCandidateCount().call({ from: ethereum.selectedAddress })
+//     .then(async (count) => {
 
-      for (let index = 1; index <= count; index++) {
-        await voting.methods.candidatelist(index)
-          .call({ from: ethereum.selectedAddress })
-          .then((result) => {
+//       for (let index = 1; index <= parseInt(count); index++) {
+//         await voting.methods.candidatelist(index)
+//           .call({ from: ethereum.selectedAddress })
+//           .then((result) => {
+//             let add = result.id;
 
-            var table = document.getElementById("tableresult");
-            var row = table.insertRow(index);
-            var cell = row.insertCell(0);
-            var cell1 = row.insertCell(1);
-            cell.innerHTML = result.name;
-            cell1.innerHTML = result.vote;
-          })
-      }
-    })
+//             if (add.toLowerCase() == ethereum.selectedAddress) {
 
-}
+
+//             }
+//           })
+//       }
+
+
+//       for (let index = 1; index <= count; index++) {
+//         await voting.methods.candidatelist(index)
+//           .call({ from: ethereum.selectedAddress })
+//           .then((result) => {
+            
+
+//             // var table = document.getElementById("tableresult");
+//             // var row = table.insertRow(index);
+//             // var cell = row.insertCell(0);
+//             // var cell1 = row.insertCell(1);
+//             // cell.innerHTML = result.name;
+//             // cell1.innerHTML = result.vote;
+//           })
+//       }
+//     })
+
+// }
 async function results() {
 
   await voting.methods.result().call({ from: ethereum.selectedAddress }).then(result => {

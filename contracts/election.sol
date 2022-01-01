@@ -86,9 +86,15 @@ contract Election {
     }
 
     function cantidateRegistration(string memory _name, uint _ward, uint _voterId)public{
+    // add conditon to valte
            for(uint j=1 ; j<=candidateCount;j++){
              if(candidateReg[j].id == msg.sender ){
                  revert("same candidate can't be register again");
+             }
+         }
+         for(uint j=1 ; j<=voterCount;j++){
+             if(voter[j].voterAddress == msg.sender && voter[j].status == false){
+                 revert("Voter is not verified");
              }
          }
 
@@ -115,12 +121,12 @@ contract Election {
              }
          }
          uint flag = 0;
-        for(uint i=1; i<= candidateCount; i++ ){
+        for(uint i=1; i <= candidateCount; i++ ){
             if(candidateReg[i].id == _voteraddress){
                 
                         approvedCandidateCount++;
                         candidateStatus _candidateStatus = candidateStatus.approved;
-                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,_voteraddress,0, candidateReg[i].VoterId, _candidateStatus,_remark);
+                        candidateReg[i] = Candidate(candidateReg[i].CandidateRegId, candidateReg[i].name,candidateReg[i].ward,_voteraddress,0, candidateReg[i].VoterId, _candidateStatus,_remark);
                         candidatelist[approvedCandidateCount] = Candidate(
                             approvedCandidateCount, 
                             candidateReg[i].name,
@@ -131,6 +137,7 @@ contract Election {
                             _candidateStatus,
                             _remark
                         );  
+                          candidatelogin[_voteraddress] = i; 
                         
 
                         flag =1;
@@ -153,18 +160,8 @@ contract Election {
                 
                         approvedCandidateCount++;
                         candidateStatus _candidateStatus = candidateStatus.rejected;
-                        candidateReg[i] = Candidate(candidateCount, candidateReg[i].name,candidateReg[i].ward,_voteraddress,0, candidateReg[i].VoterId, _candidateStatus,_remark);
-                        candidatelist[approvedCandidateCount] = Candidate(
-                            approvedCandidateCount, 
-                            candidateReg[i].name,
-                            candidateReg[i].ward,
-                            _voteraddress, 
-                            0,
-                            candidateReg[i].VoterId, 
-                            _candidateStatus,
-                            _remark
-                        );  
-                        candidatelogin[_voteraddress] = i;  
+                        candidateReg[i] = Candidate(candidateReg[i].CandidateRegId, candidateReg[i].name,candidateReg[i].ward,_voteraddress,0, candidateReg[i].VoterId, _candidateStatus,_remark);
+                       
 
                         flag =1;
                       }

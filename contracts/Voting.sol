@@ -5,10 +5,10 @@ import "./election.sol";
 
 contract Voteing is Election{
      function vote(uint candidateId) public {
-        require(candidateId > 0 && candidateId <=  candidateCount, "invalide user");
+        require(candidateId > 0 && candidateId <=  approvedCandidateCount, "invalide user");
         require(!votes[msg.sender], "you are already voted");
         
-        for(uint i=1001; i<=1000+voterCount; i++ ){
+        for(uint i=1; i<=voterCount; i++ ){
             if(voter[i].voterAddress == msg.sender){
                 if(voter[i].voterWard == candidatelist[candidateId].ward && voter[i].status == true){
                      votes[msg.sender] = true;
