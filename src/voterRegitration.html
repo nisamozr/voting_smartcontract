@@ -132,6 +132,23 @@
   </div>
 
   <script>
+    j()
+  async function j(){
+    let start =await voting.methods.voteStart().call({ from: ethereum.selectedAddress })
+    let end =await voting.methods.voteEnd().call({ from: ethereum.selectedAddress })
+       
+         
+          let rstart = new Date(1641456273*1000).toLocaleString();
+          let rend = new Date(1641456273*1000).toLocaleString();
+          let rends = new Date().toLocaleString();
+          if (rstart < rends){
+            
+          }
+          console.log(rend)
+          console.log(rends)
+      
+  }
+
     h()
 
     async function h() {

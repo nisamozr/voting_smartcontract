@@ -3,8 +3,14 @@ pragma solidity ^0.8.7;
 
 contract Election {
     address public authority;
+    uint public voteStart;
+    uint public voteEnd ;
+    uint public time = block.timestamp;
     constructor(){
         authority = msg.sender;
+        voteStart = block.timestamp + (10* 1 minutes);
+        //  voteEnd = block.timestamp + (6 * 1 hours);
+        voteEnd = block.timestamp + (2 * 1 hours);
     }
      struct Voter{
         uint RegId;

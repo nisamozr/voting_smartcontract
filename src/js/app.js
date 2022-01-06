@@ -24,7 +24,7 @@ console.log("Connection Object: ", web3)
 
 
 
-const contractAdderes = "0xC0Aa77c6583DB13026bdFe3B08B7C0422F432e69";
+const contractAdderes = "0x2dBFf25fDa4D9ce016c7546baADe355aC51df830";
 
 const abi = [
   {
@@ -285,6 +285,48 @@ const abi = [
         "name": "",
         "type": "uint256"
       },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "time",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "voteEnd",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "voteStart",
+    "outputs": [
       {
         "internalType": "uint256",
         "name": "",
@@ -783,8 +825,6 @@ function vote(id) {
 //             let add = result.id;
 
 //             if (add.toLowerCase() == ethereum.selectedAddress) {
-
-
 //             }
 //           })
 //       }
